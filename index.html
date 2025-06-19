@@ -3,332 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yes NGPT - Advanced AI Assistant</title>
+    <title>Yes NGPT - AI Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #10a37f;
             --primary-light: #e6f4f1;
-            --primary-dark: #0d7a61;
             --text: #202123;
             --text-secondary: #565869;
             --border: #e5e7eb;
             --card-bg: #ffffff;
             --background: #f7f7f8;
-            --success: #10a37f;
-            --warning: #f9a825;
-            --danger: #ef4146;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f0f9ff, #e6f7ff);
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
             color: var(--text);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            line-height: 1.6;
         }
         
         header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.5rem;
-            font-weight: 700;
+            gap: 0.75rem;
+            font-weight: 600;
         }
         
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background: var(--primary);
-            border-radius: 10px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            box-shadow: 0 4px 6px rgba(16, 163, 127, 0.2);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 2rem auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
             flex: 1;
-            width: 100%;
         }
         
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            margin-bottom: 3rem;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 231, 235, 0.5);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 500;
-            box-shadow: 0 4px 6px rgba(16, 163, 127, 0.1);
-        }
-        
-        .status-badge i {
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.8; }
-            50% { opacity: 0.4; }
-            100% { opacity: 0.8; }
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            font-size: 2rem;
-            color: var(--text);
-        }
-        
-        .section-title span {
-            color: var(--primary);
-        }
-        
-        .features-grid {
+        .actions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
         }
         
-        .feature-card {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            padding: 2rem;
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
             text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(229, 231, 235, 0.5);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
         
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(16, 163, 127, 0.15);
-            border-color: rgba(16, 163, 127, 0.3);
-        }
-        
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--primary-light);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            color: var(--primary);
-            font-size: 1.8rem;
-            box-shadow: 0 6px 12px rgba(16, 163, 127, 0.15);
-        }
-        
-        .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-        
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        
-        .cta-section {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 20px;
-            color: white;
-            margin: 3rem 0;
-        }
-        
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .cta-section p {
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: white;
-            color: var(--primary);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn:hover {
+        .action-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            margin-left: 1rem;
-        }
-        
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         footer {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem 1rem;
             text-align: center;
-            margin-top: auto;
-            border-top: 1px solid var(--border);
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-        
-        .copyright {
+            padding: 1rem;
             color: var(--text-secondary);
             font-size: 0.9rem;
-        }
-        
-        .deployment-badges {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #f3f4f6;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .badge:hover {
-            background: #e5e7eb;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .btn {
-                display: block;
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-            
-            .btn-outline {
-                margin-left: 0;
-            }
         }
     </style>
 </head>
@@ -340,182 +99,54 @@
             </div>
             <span>Yes NGPT</span>
         </div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#deploy">Deploy</a>
-            <a href="#about">About</a>
-        </div>
     </header>
 
     <div class="container">
-        <section class="hero">
-            <h1>Advanced AI Assistant</h1>
-            <p>Yes NGPT goes beyond traditional AI with predictive intelligence, cross-context memory, and multi-modal capabilities to revolutionize how you work and create.</p>
-            <div class="status-badge">
-                <i class="fas fa-circle"></i>
-                <span>Advanced Mode Activated</span>
-            </div>
-        </section>
-
-        <h2 class="section-title" id="features">What can I <span>help</span> with?</h2>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-image"></i>
-                </div>
-                <h3>Create Image</h3>
-                <p>Generate stunning visual content from text descriptions with advanced AI image synthesis.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-file-contract"></i>
-                </div>
-                <h3>Summarize Text</h3>
-                <p>Condense long documents, articles, and reports into key points while preserving meaning.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <h3>Make a Plan</h3>
-                <p>Create detailed schedules, project plans, and timelines with intelligent task allocation.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-language"></i>
-                </div>
-                <h3>Translate Content</h3>
-                <p>Convert text between 50+ languages with context-aware translation technology.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <h3>Write Email</h3>
-                <p>Draft professional emails instantly with appropriate tone and context-aware suggestions.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <h3>Chat Assistant</h3>
-                <p>Continuous conversation with persistent memory across sessions and platforms.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon" style="animation: pulse 1.5s infinite; background: rgba(16, 163, 127, 0.2);">
-                    <i class="fas fa-check"></i>
-                </div>
-                <h3>Yes NGPT</h3>
-                <p>Activate advanced intelligence with predictive capabilities and contextual awareness.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-question"></i>
-                </div>
-                <h3>Ask Anything</h3>
-                <p>Get accurate answers to any question with citations from reliable sources.</p>
-            </div>
+        <div style="background: var(--card-bg); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center; border: 1px solid var(--border);">
+            <h1>Welcome to Yes NGPT</h1>
+            <p style="color: var(--text-secondary);">Your advanced AI assistant</p>
         </div>
 
-        <section class="cta-section" id="deploy">
-            <h2>Ready to Get Started?</h2>
-            <p>Deploy Yes NGPT to your platform of choice and experience the future of AI assistance.</p>
-            <a href="#" class="btn">Try Now</a>
-            <a href="#" class="btn btn-outline">Documentation</a>
-        </section>
+        <h2 style="margin-bottom: 1rem;">What can I help with?</h2>
         
-        <h2 class="section-title" id="about">Deployment <span>Options</span></h2>
-        
-        <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem; background: rgba(255, 255, 255, 0.7); padding: 2rem; border-radius: 16px; border: 1px solid rgba(229, 231, 235, 0.5);">
-            <h3 style="margin-bottom: 1rem; color: var(--text);">To prevent 404 errors:</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-                Ensure your file is named <code>index.html</code> and placed in the root directory of your repository. 
-                Both GitHub Pages and Vercel automatically look for this file to serve as the main page.
-            </p>
+        <div class="actions-grid">
+            <div class="action-card">
+                <i class="fas fa-image" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Create Image</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Generate visuals from text</p>
+            </div>
             
-            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <div style="background: rgba(16, 163, 127, 0.1); padding: 1.5rem; border-radius: 12px; width: 300px;">
-                    <h4 style="margin-bottom: 1rem; color: var(--primary);">GitHub Pages</h4>
-                    <p style="color: var(--text-secondary);">Upload to repository → Settings → Pages → Select branch</p>
-                </div>
-                
-                <div style="background: rgba(16, 163, 127, 0.1); padding: 1.5rem; border-radius: 12px; width: 300px;">
-                    <h4 style="margin-bottom: 1rem; color: var(--primary);">Vercel</h4>
-                    <p style="color: var(--text-secondary);">Import repository → Automatic deployment → No configuration needed</p>
-                </div>
+            <div class="action-card">
+                <i class="fas fa-file-contract" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Summarize Text</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Condense long documents</p>
+            </div>
+            
+            <div class="action-card">
+                <i class="fas fa-calendar-check" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Make a Plan</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Create detailed schedules</p>
+            </div>
+            
+            <div class="action-card">
+                <i class="fas fa-language" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Translate</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Convert between languages</p>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="footer-links">
-            <a href="#">Home</a>
-            <a href="#">Features</a>
-            <a href="#">Documentation</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-        </div>
-        
-        <div class="deployment-badges">
-            <a href="#" class="badge">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
-            </a>
-            <a href="#" class="badge">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <span>Vercel</span>
-            </a>
-        </div>
-        
-        <p class="copyright">© 2023 Yes NGPT. All rights reserved. This page will work on GitHub Pages and Vercel without 404 errors.</p>
+        <p>Yes NGPT v2.5 | <a href="#" style="color: var(--primary); text-decoration: none;">Privacy Policy</a></p>
     </footer>
 
     <script>
-        // Simple interaction for feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
+        // Simple interaction example
+        document.querySelectorAll('.action-card').forEach(card => {
             card.addEventListener('click', function() {
-                const title = this.querySelector('h3').textContent;
-                this.style.animation = 'none';
-                setTimeout(() => {
-                    this.style.animation = 'pulse 0.5s ease';
-                }, 10);
-                
-                // Show a success message
-                const message = document.createElement('div');
-                message.textContent = `${title} activated!`;
-                message.style.position = 'fixed';
-                message.style.bottom = '20px';
-                message.style.left = '50%';
-                message.style.transform = 'translateX(-50%)';
-                message.style.background = 'var(--primary)';
-                message.style.color = 'white';
-                message.style.padding = '10px 20px';
-                message.style.borderRadius = '50px';
-                message.style.zIndex = '1000';
-                message.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                document.body.appendChild(message);
-                
-                setTimeout(() => {
-                    message.remove();
-                }, 3000);
+                const featureName = this.querySelector('h3').textContent;
+                alert(featureName + " feature activated!");
             });
-        });
-        
-        // Add animation to the hero section
-        const hero = document.querySelector('.hero');
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                hero.style.opacity = '1';
-                hero.style.transform = 'translateY(0)';
-            }, 300);
         });
     </script>
 </body>
