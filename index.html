@@ -84,68 +84,53 @@
             align-items: center;
         }
 
-        .language-selector {
+        .search-container {
             position: relative;
-            cursor: pointer;
+            width: 400px;
         }
 
-        .language-selector-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(99, 102, 241, 0.1);
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            padding-right: 50px;
+            border: 2px solid var(--border);
             border-radius: 50px;
-            color: var(--primary);
-            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--background);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-buttons {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
         }
 
-        .language-selector-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-        }
-
-        .language-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 12px;
-            width: 200px;
-            display: none;
-            z-index: 10;
-        }
-
-        .language-option {
-            padding: 10px 14px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .language-option:hover {
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .language-option.active {
-            background: rgba(99, 102, 241, 0.1);
+        .search-btn:hover {
             color: var(--primary);
-            font-weight: 500;
         }
 
-        .language-flag {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
+        .voice-active {
+            color: var(--danger);
+            animation: pulse 1s infinite;
         }
 
         .user-profile {
@@ -415,158 +400,40 @@
             opacity: 1;
         }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .modal-content {
+        .result-container {
             background: white;
             border-radius: 20px;
             padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            margin-top: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            display: none;
         }
 
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
+        .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .modal-title {
+        .result-title {
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--primary);
         }
 
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-
-        .modal-body {
-            margin-bottom: 30px;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            background: var(--background);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-
-        .chat-container {
-            background: var(--background);
-            border-radius: 16px;
-            padding: 20px;
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .chat-message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            border-radius: 12px;
-            max-width: 80%;
-        }
-
-        .user-message {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            margin-left: auto;
-        }
-
-        .ai-message {
-            background: white;
-            border: 1px solid var(--border);
-            margin-right: auto;
+        .result-content {
+            line-height: 1.8;
         }
 
         @media (max-width: 900px) {
             .actions-grid {
                 grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+            
+            .search-container {
+                width: 300px;
             }
         }
 
@@ -592,6 +459,12 @@
             .actions-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -615,42 +488,20 @@
         <header>
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-check"></i>
+                    <i class="fas fa-bolt"></i>
                 </div>
                 <span>Yes NGPT</span>
             </div>
             <div class="nav-controls">
-                <div class="language-selector" id="language-selector">
-                    <div class="language-selector-btn">
-                        <i class="fas fa-globe"></i>
-                        <span>English</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="language-dropdown" id="language-dropdown">
-                        <div class="language-option active" data-lang="en">
-                            <div class="language-flag">🇺🇸</div>
-                            <span>English</span>
-                        </div>
-                        <div class="language-option" data-lang="es">
-                            <div class="language-flag">🇪🇸</div>
-                            <span>Español</span>
-                        </div>
-                        <div class="language-option" data-lang="fr">
-                            <div class="language-flag">🇫🇷</div>
-                            <span>Français</span>
-                        </div>
-                        <div class="language-option" data-lang="de">
-                            <div class="language-flag">🇩🇪</div>
-                            <span>Deutsch</span>
-                        </div>
-                        <div class="language-option" data-lang="zh">
-                            <div class="language-flag">🇨🇳</div>
-                            <span>中文</span>
-                        </div>
-                        <div class="language-option" data-lang="ar">
-                            <div class="language-flag">🇸🇦</div>
-                            <span>العربية</span>
-                        </div>
+                <div class="search-container">
+                    <input type="text" class="search-bar" id="search-input" placeholder="Ask anything...">
+                    <div class="search-buttons">
+                        <button class="search-btn" id="voice-btn">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="search-btn" id="search-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="user-profile" id="user-profile">
@@ -662,11 +513,11 @@
 
         <div class="container">
             <div class="welcome-section">
-                <h1>Welcome to Yes NGPT</h1>
-                <p>Your advanced AI assistant with predictive intelligence, cross-context memory, and multi-modal capabilities. Go beyond standard AI with our NeuroGraph reasoning engine.</p>
+                <h1>Advanced AI Assistant</h1>
+                <p>Yes NGPT provides lightning-fast responses with predictive intelligence and multi-modal capabilities. Experience AI that's faster and more capable than standard chatbots.</p>
                 <div class="ngpt-status">
                     <i class="fas fa-circle"></i>
-                    <span>Advanced Mode Activated</span>
+                    <span>Predictive Mode Active</span>
                 </div>
             </div>
 
@@ -678,7 +529,7 @@
                         <i class="fas fa-image"></i>
                     </div>
                     <h3>Create Image</h3>
-                    <p>Generate visual content from text descriptions</p>
+                    <p>Generate visuals from text</p>
                 </div>
                 
                 <div class="action-card summarize" data-feature="summarize">
@@ -686,7 +537,7 @@
                         <i class="fas fa-file-contract"></i>
                     </div>
                     <h3>Summarize Text</h3>
-                    <p>Condense long documents into key points</p>
+                    <p>Condense documents</p>
                 </div>
                 
                 <div class="action-card plan" data-feature="plan">
@@ -694,5 +545,109 @@
                         <i class="fas fa-calendar-check"></i>
                     </div>
                     <h3>Make a Plan</h3>
-                    <p>Create detailed schedules and project plans</p>
-          
+                    <p>Create schedules</p>
+                </div>
+                
+                <div class="action-card translate" data-feature="translate">
+                    <div class="action-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Translate</h3>
+                    <p>Convert languages</p>
+                </div>
+                
+                <div class="action-card email" data-feature="email">
+                    <div class="action-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Write Email</h3>
+                    <p>Draft messages</p>
+                </div>
+                
+                <div class="action-card chat" data-feature="chat">
+                    <div class="action-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Chat Assistant</h3>
+                    <p>Conversation with memory</p>
+                </div>
+                
+                <div class="action-card ngpt" id="activate-ngpt">
+                    <div class="action-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Yes NGPT</h3>
+                    <p>Advanced intelligence</p>
+                </div>
+                
+                <div class="action-card ask" data-feature="ask">
+                    <div class="action-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <h3>Ask Anything</h3>
+                    <p>Get answers</p>
+                </div>
+            </div>
+            
+            <div class="result-container" id="result-container">
+                <div class="result-header">
+                    <h3 class="result-title">AI Response</h3>
+                    <button class="search-btn" id="close-result">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="result-content" id="result-content">
+                    <!-- AI response will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#"><i class="fas fa-history"></i> History</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy</a>
+                <a href="#"><i class="fas fa-file-alt"></i> Terms</a>
+            </div>
+            <p class="copyright">© 2023 Yes NGPT. Advanced AI Assistant Platform</p>
+        </footer>
+
+        <div class="toast" id="toast">Feature activated!</div>
+    </div>
+
+    <script>
+        // App state
+        const state = {
+            advancedMode: true,
+            voiceActive: false,
+            recognition: null
+        };
+
+        // DOM elements
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const voiceBtn = document.getElementById('voice-btn');
+        const resultContainer = document.getElementById('result-container');
+        const resultContent = document.getElementById('result-content');
+        const closeResult = document.getElementById('close-result');
+        
+        // Initialize speech recognition
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window) {
+                state.recognition = new webkitSpeechRecognition();
+                state.recognition.continuous = false;
+                state.recognition.interimResults = false;
+                state.recognition.lang = 'en-US';
+                
+                state.recognition.onstart = function() {
+                    voiceBtn.querySelector('i').classList.add('voice-active');
+                    state.voiceActive = true;
+                };
+                
+                state.recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                    voiceBtn.querySelector('i').classList.remove('voice-active');
+                    state.voiceActive = false;
+                    
+                    // Aut
