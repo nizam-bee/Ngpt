@@ -3,151 +3,696 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yes NGPT - AI Assistant</title>
+    <title>Yes NGPT - Advanced AI Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #10a37f;
-            --primary-light: #e6f4f1;
-            --text: #202123;
-            --text-secondary: #565869;
-            --border: #e5e7eb;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --text: #1e293b;
+            --text-secondary: #64748b;
             --card-bg: #ffffff;
-            --background: #f7f7f8;
+            --background: #f8fafc;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
         }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--background);
-            color: var(--text);
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff, #e6f7ff);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.6;
         }
-        
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
         header {
-            background: var(--card-bg);
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
-        
+
         .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 6px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
         }
-        
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            flex: 1;
+
+        .nav-controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+
+        .language-selector {
+            position: relative;
+            cursor: pointer;
         }
-        
-        .action-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+
+        .language-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .language-selector-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
             border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            width: 200px;
+            display: none;
+            z-index: 10;
+        }
+
+        .language-option {
+            padding: 10px 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             transition: all 0.2s ease;
             cursor: pointer;
         }
-        
-        .action-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+        .language-option:hover {
+            background: rgba(99, 102, 241, 0.05);
         }
-        
-        footer {
+
+        .language-option.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .language-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(129, 140, 248, 0.03));
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
             text-align: center;
-            padding: 1rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.05);
+        }
+
+        .welcome-section h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+
+        .ngpt-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 30px 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .action-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .action-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-card.create .action-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .action-card.summarize .action-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .action-card.plan .action-icon {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .action-card.translate .action-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+
+        .action-card.email .action-icon {
+            background: rgba(236, 72, 153, 0.1);
+            color: #ec4899;
+        }
+
+        .action-card.chat .action-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        .action-card.ngpt .action-icon {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        .action-card.ask .action-icon {
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+        }
+
+        .action-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.9; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.9; }
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
             color: var(--text-secondary);
             font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            margin-bottom: 30px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: var(--background);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .chat-container {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            margin-left: auto;
+        }
+
+        .ai-message {
+            background: white;
+            border: 1px solid var(--border);
+            margin-right: auto;
+        }
+
+        @media (max-width: 900px) {
+            .actions-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .user-profile span {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-check"></i>
+    <div id="app">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <span>Yes NGPT</span>
             </div>
-            <span>Yes NGPT</span>
-        </div>
-    </header>
-
-    <div class="container">
-        <div style="background: var(--card-bg); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center; border: 1px solid var(--border);">
-            <h1>Welcome to Yes NGPT</h1>
-            <p style="color: var(--text-secondary);">Your advanced AI assistant</p>
-        </div>
-
-        <h2 style="margin-bottom: 1rem;">What can I help with?</h2>
-        
-        <div class="actions-grid">
-            <div class="action-card">
-                <i class="fas fa-image" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h3>Create Image</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Generate visuals from text</p>
+            <div class="nav-controls">
+                <div class="language-selector" id="language-selector">
+                    <div class="language-selector-btn">
+                        <i class="fas fa-globe"></i>
+                        <span>English</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="language-dropdown" id="language-dropdown">
+                        <div class="language-option active" data-lang="en">
+                            <div class="language-flag">🇺🇸</div>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="es">
+                            <div class="language-flag">🇪🇸</div>
+                            <span>Español</span>
+                        </div>
+                        <div class="language-option" data-lang="fr">
+                            <div class="language-flag">🇫🇷</div>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <div class="language-flag">🇩🇪</div>
+                            <span>Deutsch</span>
+                        </div>
+                        <div class="language-option" data-lang="zh">
+                            <div class="language-flag">🇨🇳</div>
+                            <span>中文</span>
+                        </div>
+                        <div class="language-option" data-lang="ar">
+                            <div class="language-flag">🇸🇦</div>
+                            <span>العربية</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-profile" id="user-profile">
+                    <div class="avatar">JD</div>
+                    <span>John Doe</span>
+                </div>
             </div>
+        </header>
+
+        <div class="container">
+            <div class="welcome-section">
+                <h1>Welcome to Yes NGPT</h1>
+                <p>Your advanced AI assistant with predictive intelligence, cross-context memory, and multi-modal capabilities. Go beyond standard AI with our NeuroGraph reasoning engine.</p>
+                <div class="ngpt-status">
+                    <i class="fas fa-circle"></i>
+                    <span>Advanced Mode Activated</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">What can I help with?</h2>
             
-            <div class="action-card">
-                <i class="fas fa-file-contract" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h3>Summarize Text</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Condense long documents</p>
-            </div>
-            
-            <div class="action-card">
-                <i class="fas fa-calendar-check" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h3>Make a Plan</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Create detailed schedules</p>
-            </div>
-            
-            <div class="action-card">
-                <i class="fas fa-language" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h3>Translate</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Convert between languages</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>Yes NGPT v2.5 | <a href="#" style="color: var(--primary); text-decoration: none;">Privacy Policy</a></p>
-    </footer>
-
-    <script>
-        // Simple interaction example
-        document.querySelectorAll('.action-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const featureName = this.querySelector('h3').textContent;
-                alert(featureName + " feature activated!");
-            });
-        });
-    </script>
-</body>
-</html>
+            <div class="actions-grid">
+                <div class="action-card create" data-feature="create">
+                    <div class="action-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Create Image</h3>
+                    <p>Generate visual content from text descriptions</p>
+                </div>
+                
+                <div class="action-card summarize" data-feature="summarize">
+                    <div class="action-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3>Summarize Text</h3>
+                    <p>Condense long documents into key points</p>
+                </div>
+                
+                <div class="action-card plan" data-feature="plan">
+                    <div class="action-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Make a Plan</h3>
+                    <p>Create detailed schedules and project plans</p>
+          
