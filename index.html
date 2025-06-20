@@ -3,599 +3,645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yes NGPT - ChatGPT-like Interface</title>
+    <title>BetterSearch - AI-Powered Search Engine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #10a37f;
-            --primary-light: #e6f4f1;
-            --text: #202123;
-            --text-secondary: #565869;
-            --border: #e5e7eb;
-            --card-bg: #ffffff;
-            --background: #f7f7f8;
-            --sidebar-bg: #f9f9fb;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --warning: #fbbc05;
+            --dark-bg: #202124;
+            --dark-card: #303134;
+            --dark-text: #e8eaed;
+            --light-bg: #ffffff;
+            --light-card: #f8f9fa;
+            --light-text: #202124;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            background-color: var(--background);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
-        }
-        
-        /* Sidebar Styles */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            height: 100%;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
         }
-        
-        .new-chat-btn {
-            margin: 15px;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--card-bg);
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* Header Styles */
+        header {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .new-chat-btn:hover {
-            background-color: var(--primary-light);
-        }
-        
-        .new-chat-btn i {
-            font-size: 16px;
-        }
-        
-        .chat-history {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-        
-        .chat-item {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .chat-item:hover {
-            background-color: var(--primary-light);
-        }
-        
-        .chat-item i {
-            color: var(--text-secondary);
-        }
-        
-        .sidebar-footer {
-            padding: 15px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .sidebar-footer a {
-            color: var(--text);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
-        
-        .sidebar-footer a:hover {
-            background-color: var(--primary-light);
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .chat-header {
-            padding: 15px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid #dfe1e5;
         }
-        
-        .chat-title {
-            font-weight: 600;
+
+        body.dark-mode header {
+            border-bottom: 1px solid #5f6368;
         }
-        
-        .chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
+
+        .logo {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            gap: 8px;
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
             gap: 25px;
         }
-        
-        .message {
-            max-width: 90%;
-            width: fit-content;
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--light-text);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+
+        body.dark-mode .nav-links a {
+            color: var(--dark-text);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-icons {
             display: flex;
             gap: 20px;
+            align-items: center;
         }
-        
-        .message-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 2px;
-            background: var(--primary);
+
+        .nav-icons i {
+            font-size: 18px;
+            cursor: pointer;
+            color: #5f6368;
+            transition: color 0.2s;
+        }
+
+        body.dark-mode .nav-icons i {
+            color: #9aa0a6;
+        }
+
+        .nav-icons i:hover {
+            color: var(--primary);
+        }
+
+        .user-profile {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--warning));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            flex-shrink: 0;
-        }
-        
-        .user .message-avatar {
-            background: #9e6de0;
-        }
-        
-        .message-content {
-            padding-top: 5px;
-        }
-        
-        .user .message-content {
-            max-width: 100%;
-        }
-        
-        .message-text {
-            line-height: 1.6;
-        }
-        
-        /* Input Area */
-        .input-container {
-            padding: 15px;
-            position: relative;
-        }
-        
-        .input-box {
-            position: relative;
-        }
-        
-        .input-box input {
-            width: 100%;
-            padding: 15px 45px 15px 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--card-bg);
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-        }
-        
-        .input-box input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
-        }
-        
-        .input-buttons {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            gap: 10px;
-        }
-        
-        .input-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
+            font-weight: 600;
             cursor: pointer;
-            font-size: 18px;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
-        .input-btn:hover {
-            background: var(--primary-light);
+
+        /* Main Content */
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Search Section */
+        .search-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: 40px;
+        }
+
+        .search-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .search-title span {
+            font-weight: 700;
             color: var(--primary);
         }
-        
-        .ai-typing {
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 0 20px;
+            height: 46px;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.3s;
+        }
+
+        body.dark-mode .search-box {
+            border: 1px solid #5f6368;
+            background-color: var(--dark-card);
+        }
+
+        .search-box:hover, .search-box:focus-within {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            height: 100%;
+            padding: 0 15px;
+            font-size: 16px;
+            background: transparent;
+            color: var(--light-text);
+        }
+
+        body.dark-mode .search-box input {
+            color: var(--dark-text);
+        }
+
+        .search-box i {
+            color: #9aa0a6;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .search-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .search-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #3c4043;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        body.dark-mode .search-btn {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+            border: 1px solid #5f6368;
+        }
+
+        .search-btn:hover {
+            border: 1px solid #dadce0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .primary-btn {
+            background-color: var(--primary);
+            color: white;
+            border: 1px solid var(--primary) !important;
+        }
+
+        .primary-btn:hover {
+            box-shadow: 0 1px 2px rgba(66, 133, 244, 0.3);
+        }
+
+        .search-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            width: 160px;
+            text-align: center;
+            padding: 20px 15px;
+            border-radius: 12px;
+            background-color: var(--light-card);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        body.dark-mode .feature-card {
+            background-color: var(--dark-card);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card:nth-child(1) i { color: var(--primary); }
+        .feature-card:nth-child(2) i { color: var(--secondary); }
+        .feature-card:nth-child(3) i { color: var(--accent); }
+        .feature-card:nth-child(4) i { color: var(--warning); }
+
+        .feature-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: #5f6368;
+        }
+
+        body.dark-mode .feature-card p {
+            color: #9aa0a6;
+        }
+
+        /* AI Assistant Section */
+        .ai-section {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--light-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        body.dark-mode .ai-section {
+            background-color: var(--dark-card);
+        }
+
+        .ai-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), #3367d6);
+            color: white;
+        }
+
+        .ai-header h2 {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 0;
-            color: var(--text-secondary);
-            font-size: 14px;
         }
-        
-        .typing-indicator {
+
+        .ai-header h2 i {
+            font-size: 24px;
+        }
+
+        .ai-conversation {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 400px;
             display: flex;
-            gap: 5px;
+            flex-direction: column;
+            gap: 15px;
         }
-        
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--text-secondary);
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: typing 1.4s infinite;
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.5;
         }
-        
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
+
+        .user-message {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
         }
-        
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
+
+        .ai-message {
+            background-color: #e8eaed;
+            color: var(--light-text);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
         }
-        
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
+
+        body.dark-mode .ai-message {
+            background-color: #3c4043;
+            color: var(--dark-text);
         }
-        
-        /* Responsive Design */
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 70px;
-            }
-            
-            .sidebar .text {
-                display: none;
-            }
-            
-            .sidebar .new-chat-btn {
-                justify-content: center;
-                padding: 12px;
-            }
-            
-            .sidebar-footer a span {
-                display: none;
-            }
-            
-            .sidebar-footer a {
-                justify-content: center;
-            }
+
+        .ai-input-container {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #dfe1e5;
         }
-        
-        @media (max-width: 600px) {
-            .sidebar {
-                position: absolute;
-                left: -260px;
-                z-index: 100;
-                background: white;
-                height: 100%;
-            }
-            
-            .sidebar.active {
-                left: 0;
-            }
-            
-            .sidebar-toggle {
-                display: block !important;
-            }
+
+        body.dark-mode .ai-input-container {
+            border-top: 1px solid #5f6368;
         }
-        
-        .sidebar-toggle {
-            display: none;
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: none;
+
+        .ai-input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            background-color: transparent;
+            color: var(--light-text);
+        }
+
+        body.dark-mode .ai-input-container input {
+            border: 1px solid #5f6368;
+            color: var(--dark-text);
+        }
+
+        .ai-input-container button {
+            background-color: var(--primary);
+            color: white;
             border: none;
-            font-size: 20px;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            color: var(--text-secondary);
-            z-index: 101;
+            transition: background-color 0.2s;
         }
-        
-        .mobile-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 99;
+
+        .ai-input-container button:hover {
+            background-color: #3367d6;
         }
-        
-        .mobile-overlay.active {
-            display: block;
+
+        /* Footer */
+        footer {
+            background-color: var(--light-card);
+            padding: 20px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 14px;
+            border-top: 1px solid #dfe1e5;
+        }
+
+        body.dark-mode footer {
+            background-color: var(--dark-card);
+            border-top: 1px solid #5f6368;
+            color: #9aa0a6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .ai-section {
+                width: 100%;
+                max-width: 600px;
+                margin: 40px auto 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-title {
+                font-size: 28px;
+            }
+            
+            .search-features {
+                gap: 15px;
+            }
+            
+            .feature-card {
+                width: 140px;
+                padding: 15px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <div class="mobile-overlay" id="mobile-overlay"></div>
-    
-    <div class="sidebar" id="sidebar">
-        <div class="new-chat-btn" id="new-chat-btn">
-            <i class="fas fa-plus"></i>
-            <span class="text">New chat</span>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-search"></i>
+            <span>BetterSearch</span>
         </div>
         
-        <div class="chat-history" id="chat-history">
-            <div class="chat-item active">
-                <i class="fas fa-message"></i>
-                <span>How to learn JavaScript</span>
-            </div>
-            <div class="chat-item">
-                <i class="fas fa-message"></i>
-                <span>Python vs JavaScript</span>
-            </div>
-            <div class="chat-item">
-                <i class="fas fa-message"></i>
-                <span>AI future predictions</span>
-            </div>
-            <div class="chat-item">
-                <i class="fas fa-message"></i>
-                <span>Best programming practices</span>
-            </div>
-            <div class="chat-item">
-                <i class="fas fa-message"></i>
-                <span>Web development roadmap</span>
-            </div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-history"></i> Activity</a>
+            <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
         </div>
         
-        <div class="sidebar-footer">
-            <a href="#">
-                <i class="fas fa-trash"></i>
-                <span>Clear conversations</span>
-            </a>
-            <a href="#">
-                <i class="fas fa-user"></i>
-                <span>My account</span>
-            </a>
-            <a href="#">
-                <i class="fas fa-question-circle"></i>
-                <span>Help & FAQ</span>
-            </a>
+        <div class="nav-icons">
+            <i class="fas fa-th" title="Apps"></i>
+            <i class="fas fa-bell" title="Notifications"></i>
+            <div style="position: relative;">
+                <i class="fas fa-user-circle" title="User Profile" style="font-size: 32px;"></i>
+                <div class="badge">3</div>
+            </div>
+            <i class="fas fa-moon" id="dark-mode-toggle" title="Dark Mode"></i>
         </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <h1 class="search-title">Search the Web <span>Smarter</span></h1>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search the web or type a question...">
+                    <i class="fas fa-microphone" id="voice-search-btn"></i>
+                    <i class="fas fa-camera" id="image-search-btn"></i>
+                </div>
+            </div>
+            
+            <div class="search-buttons">
+                <button class="search-btn">Better Search</button>
+                <button class="search-btn primary-btn">I'm Feeling Lucky</button>
+            </div>
+            
+            <div class="search-features">
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Assistant</h3>
+                    <p>Get instant answers to your questions</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>Search History</h3>
+                    <p>Review and manage your activity</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Privacy First</h3>
+                    <p>Control what data is saved</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-magic"></i>
+                    <h3>Smart Results</h3>
+                    <p>More relevant answers instantly</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- AI Assistant Section -->
+        <section class="ai-section">
+            <div class="ai-header">
+                <h2><i class="fas fa-robot"></i> AI Assistant</h2>
+            </div>
+            
+            <div class="ai-conversation" id="chat-container">
+                <div class="message ai-message">
+                    Hello! I'm your AI assistant. How can I help you today? You can ask me anything!
+                </div>
+                <div class="message user-message">
+                    What makes BetterSearch different from other search engines?
+                </div>
+                <div class="message ai-message">
+                    BetterSearch combines the best of traditional search with AI enhancements. I provide contextual answers, summarize complex topics, and help you explore ideas - all while respecting your privacy!
+                </div>
+            </div>
+            
+            <div class="ai-input-container">
+                <input type="text" id="ai-input" placeholder="Ask me anything...">
+                <button id="send-ai-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </section>
     </div>
     
-    <div class="main-content">
-        <div class="chat-header">
-            <div class="chat-title" id="chat-title">New Chat</div>
-        </div>
-        
-        <div class="chat-container" id="chat-container">
-            <div class="message ai">
-                <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="message-content">
-                    <div class="message-text">
-                        Hello! I'm Yes NGPT, your advanced AI assistant. How can I help you today?
-                    </div>
-                </div>
-            </div>
-            
-            <div class="message user">
-                <div class="message-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="message-content">
-                    <div class="message-text">
-                        Can you explain how neural networks work in simple terms?
-                    </div>
-                </div>
-            </div>
-            
-            <div class="message ai">
-                <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="message-content">
-                    <div class="message-text">
-                        Absolutely! Think of a neural network like a simplified model of the human brain. It consists of layers of interconnected "neurons" that process information. Each connection has a weight that adjusts as the network learns from data. The network makes predictions by passing data through these layers, with each neuron performing a simple calculation. During training, it adjusts weights to minimize errors, gradually improving its accuracy.
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="input-container">
-            <div class="ai-typing" id="ai-typing" style="display: none;">
-                <div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-                <span>Yes NGPT is typing</span>
-            </div>
-            
-            <div class="input-box">
-                <input type="text" id="message-input" placeholder="Message Yes NGPT...">
-                <div class="input-buttons">
-                    <button class="input-btn" id="send-btn">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>BetterSearch - AI-Powered Search Engine | Privacy Policy | Terms of Service | © 2023 BetterSearch</p>
+    </footer>
     
     <script>
-        // DOM Elements
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const mobileOverlay = document.getElementById('mobile-overlay');
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeToggle.classList.toggle('fa-moon');
+            darkModeToggle.classList.toggle('fa-sun');
+        });
+        
+        // Voice Search Simulation
+        const voiceSearchBtn = document.getElementById('voice-search-btn');
+        voiceSearchBtn.addEventListener('click', () => {
+            const searchInput = document.getElementById('search-input');
+            searchInput.value = '';
+            searchInput.placeholder = 'Listening...';
+            voiceSearchBtn.style.color = 'var(--accent)';
+            
+            setTimeout(() => {
+                const sampleQueries = [
+                    "What is artificial intelligence?",
+                    "Latest news on space exploration",
+                    "How to bake chocolate chip cookies",
+                    "Python programming tutorials"
+                ];
+                const randomQuery = sampleQueries[Math.floor(Math.random() * sampleQueries.length)];
+                searchInput.value = randomQuery;
+                searchInput.placeholder = 'Search the web or type a question...';
+                voiceSearchBtn.style.color = '';
+            }, 2000);
+        });
+        
+        // Image Search Simulation
+        const imageSearchBtn = document.getElementById('image-search-btn');
+        imageSearchBtn.addEventListener('click', () => {
+            alert("Image search activated! Drag an image here or click to upload.");
+        });
+        
+        // AI Chat Functionality
+        const aiInput = document.getElementById('ai-input');
+        const sendAiBtn = document.getElementById('send-ai-btn');
         const chatContainer = document.getElementById('chat-container');
-        const messageInput = document.getElementById('message-input');
-        const sendBtn = document.getElementById('send-btn');
-        const newChatBtn = document.getElementById('new-chat-btn');
-        const aiTyping = document.getElementById('ai-typing');
-        const chatTitle = document.getElementById('chat-title');
         
-        // Initialize chat history from localStorage
-        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [
-            { id: 1, title: "How to learn JavaScript", active: true },
-            { id: 2, title: "Python vs JavaScript", active: false },
-            { id: 3, title: "AI future predictions", active: false },
-            { id: 4, title: "Best programming practices", active: false },
-            { id: 5, title: "Web development roadmap", active: false }
-        ];
-        
-        // Current conversation
-        let currentConversation = chatHistory.find(chat => chat.active) || chatHistory[0];
-        
-        // Simulated backend responses
-        const responses = [
-            "Neural networks are computational models inspired by the human brain. They consist of interconnected nodes (neurons) organized in layers that process information through weighted connections.",
-            "Machine learning is a subset of AI that enables systems to learn from data without explicit programming. It uses algorithms to identify patterns and make decisions.",
-            "Yes NGPT uses a transformer-based architecture similar to GPT models, but with enhancements for faster response times and more accurate answers.",
-            "To become an AI engineer, you should learn programming (Python is essential), mathematics (linear algebra, calculus), machine learning frameworks (TensorFlow, PyTorch), and gain practical experience through projects.",
-            "The main difference is that AI is the broader concept of machines performing tasks intelligently, while machine learning is a specific approach to achieve AI by learning from data.",
-            "Ethical concerns include bias in algorithms, privacy issues, job displacement, and the potential for misuse in surveillance and autonomous weapons systems.",
-            "Deep learning is a specialized form of machine learning that uses neural networks with many layers (deep networks) to learn complex patterns in large amounts of data.",
-            "Yes NGPT can assist with coding by explaining concepts, debugging code, suggesting improvements, and even generating code snippets in multiple programming languages.",
-            "Natural Language Processing (NLP) enables machines to understand, interpret, and generate human language, allowing for more natural interactions between humans and computers.",
-            "The future of AI includes more advanced personal assistants, breakthroughs in healthcare diagnostics, autonomous vehicles, enhanced creativity tools, and more seamless human-computer interactions."
-        ];
-        
-        // Initialize the app
-        function initApp() {
-            renderChatHistory();
-            updateChatTitle();
-            
-            // Set up event listeners
-            sidebarToggle.addEventListener('click', toggleSidebar);
-            mobileOverlay.addEventListener('click', closeSidebar);
-            sendBtn.addEventListener('click', sendMessage);
-            newChatBtn.addEventListener('click', createNewChat);
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-            
-            // Load conversation messages
-            loadConversationMessages();
+        function addMessage(message, isUser = false) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(isUser ? 'user-message' : 'ai-message');
+            messageElement.textContent = message;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
-        // Toggle sidebar on mobile
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            mobileOverlay.classList.toggle('active');
-        }
-        
-        // Close sidebar
-        function closeSidebar() {
-            sidebar.classList.remove('active');
-            mobileOverlay.classList.remove('active');
-        }
-        
-        // Render chat history
-        function renderChatHistory() {
-            const chatHistoryEl = document.getElementById('chat-history');
-            chatHistoryEl.innerHTML = '';
+        sendAiBtn.addEventListener('click', () => {
+            if (aiInput.value.trim() === '') return;
             
-            chatHistory.forEach(chat => {
-                const chatItem = document.createElement('div');
-                chatItem.className = `chat-item ${chat.active ? 'active' : ''}`;
-                chatItem.innerHTML = `
-                    <i class="fas fa-message"></i>
-                    <span>${chat.title}</span>
-                `;
+            // Add user message
+            addMessage(aiInput.value, true);
+            const userQuestion = aiInput.value;
+            aiInput.value = '';
+            
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let response = "I'm sorry, I didn't understand that. Can you rephrase?";
                 
-                chatItem.addEventListener('click', () => {
-                    // Deactivate all chats
-                    chatHistory.forEach(c => c.active = false);
-                    // Activate clicked chat
-                    chat.active = true;
-                    currentConversation = chat;
-                    
-                    // Update UI
-                    renderChatHistory();
-                    updateChatTitle();
-                    loadConversationMessages();
-                    
-                    // Close sidebar on mobile
-                    closeSidebar();
-                });
-                
-                chatHistoryEl.appendChild(chatItem);
-            });
-        }
-        
-        // Update chat title
-        function updateChatTitle() {
-            chatTitle.textContent = currentConversation.title;
-        }
-        
-        // Create new chat
-        function createNewChat() {
-            // Deactivate all chats
-            chatHistory.forEach(chat => chat.active = false);
-            
-            // Create new chat
-            const newChatId = Math.max(...chatHistory.map(chat => chat.id), 0) + 1;
-            const newChat = {
-                id: newChatId,
-                title: "New Chat",
-                active: true,
-                messages: []
-            };
-            
-            chatHistory.unshift(newChat);
-            currentConversation = newChat;
-            
-            // Update UI
-            renderChatHistory();
-            updateChatTitle();
-            clearChatContainer();
-            
-            // Add welcome message
-            addMessage('ai', "Hello! I'm Yes NGPT, your advanced AI assistant. What would you like to know?");
-            
-            // Save to localStorage
-            saveChatHistory();
-            
-            // Close sidebar on mobile
-            closeSidebar();
-        }
-        
-        // Clear chat container
-        function clearChatContainer() {
-            chatContainer.innerHTML = '';
-        }
-        
-        // Load conversation messages
-        function loadConversationMessages() {
-            clearC
+                if (userQuestion.toLowerCase().includes('hello') || userQuestion.toLowerCase().includes('hi')) {
+                    response = "Hello! How can I assist you today?";
+                } else if (userQuestion.toLowerCase().includes('weather')) {
+                    response = "I can provide weather information. Please specify a location, for example: 'What's the weather in New York?'";
+                } else if (userQuestion.toLowerCase().includes('difference') || userQuestion.toLowerCase().includes('better than google')) {
+                    response = "BetterSearch offers AI-powered summaries, contextual understanding, and enhanced privacy controls. I can help you explore topics conversationally rather than just providing links!";
+                } else if (userQuestion.toLowerCase().includes('privacy')) {
+                    response = "Your privacy is important! BetterSearch doesn't track your searches for advertising. You can delete your history anytime in the Activity section.";
+                } else if (userQuestion.toLowerCase().includes(
